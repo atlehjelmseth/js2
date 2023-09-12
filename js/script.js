@@ -53,6 +53,8 @@ async function loginUser(url, userData) {
     console.log(response);
     const json = await response.json();
     console.log(json);
+    const accessToken = json.accessToken;
+    localStorage.setItem('accessToken', accessToken)
   } catch (error) {
     console.log(error);
   }
@@ -65,4 +67,31 @@ const userToLogin = {
 
 const loginUrl = `${api_base_url}/api/v1/social/auth/login`
 
-loginUser(loginUrl, userToLogin);
+// loginUser(loginUrl, userToLogin);
+
+
+
+async function getWithToken(url, method = 'GET') {
+  try {
+    console.log(url);
+    const token = localStorage.getItem('accessToken');
+    console.log(token);
+    const fetchOptions = {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    };
+    const response = await fetch(url, fetchOptions);
+    console.log(response);
+    const json = await response.json();
+    console.log(json); 
+  } catch(error){
+    console.log(error);
+  }
+}
+
+const postsUrl = `${api_base_url}/api/v1/social/posts`
+
+getWithToken(postsUrl);
