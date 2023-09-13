@@ -39,6 +39,11 @@ const registerUrl = `${api_base_url}/api/v1/social/auth/register`;
 
 // registerUser(registerUrl, userToRegister);
 
+// email: 'atleSecondTest@noroff.no',
+// password: 'TrustNo1',
+
+const login = document.getElementById("login");
+
 
 async function loginUser(url, userData) {
   try {
@@ -60,10 +65,6 @@ async function loginUser(url, userData) {
   }
 }
 
-const userToLogin = {
-  email: 'atleSecondTest@noroff.no',
-  password: 'TrustNo1',
-};
 
 const loginUrl = `${api_base_url}/api/v1/social/auth/login`
 
@@ -87,6 +88,7 @@ async function getWithToken(url, method = 'GET') {
     console.log(response);
     const json = await response.json();
     console.log(json); 
+    // location.href = "/profile.html";
   } catch(error){
     console.log(error);
   }
@@ -94,4 +96,24 @@ async function getWithToken(url, method = 'GET') {
 
 const postsUrl = `${api_base_url}/api/v1/social/posts`
 
-getWithToken(postsUrl);
+// getWithToken(postsUrl);
+
+login.onclick = function (ev) {
+  ev.preventDefault()
+
+
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+const userToLogin = {
+  email: email,
+  password: password,
+  // email: 'atleSecondTest@noroff.no',
+  // password: 'TrustNo1',
+};
+
+  console.log(userToLogin)
+  loginUser(loginUrl, userToLogin),
+  getWithToken(postsUrl);
+}
+
