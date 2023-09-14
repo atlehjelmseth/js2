@@ -1,48 +1,13 @@
 const api_base_url = 'https://api.noroff.dev';
 
 
-/**
- * Register the user to the API
- * @param {string} url 
- * @param {any} userData 
- * ``` JS
- * registerUser(registerUrl, userToRegister);
- * ```
- */
-async function registerUser(url, userData) {
-  try {
-    const postData = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    };
-    const response = await fetch(url, postData);
-    console.log(response);
-    const json = await response.json();
-    console.log(json);
-  } catch(error) {
-    console.log(error);
-  }
-
-}
-
-const userToRegister = {
-  name: 'AtleSecondTest',
-  email: 'atleSecondTest@noroff.no',
-  password: 'TrustNo1',
-};
-
-const registerUrl = `${api_base_url}/api/v1/social/auth/register`;
-
-
-// registerUser(registerUrl, userToRegister);
-
 // email: 'atleSecondTest@noroff.no',
 // password: 'TrustNo1',
 
+const loginUrl = `${api_base_url}/api/v1/social/auth/login`
 const login = document.getElementById("login");
+
+
 
 
 async function loginUser(url, userData) {
@@ -63,14 +28,10 @@ async function loginUser(url, userData) {
   } catch (error) {
     console.log(error);
   }
+  
 }
 
-
-const loginUrl = `${api_base_url}/api/v1/social/auth/login`
-
 // loginUser(loginUrl, userToLogin);
-
-
 
 async function getWithToken(url, method = 'GET') {
   try {
@@ -85,10 +46,15 @@ async function getWithToken(url, method = 'GET') {
       },
     };
     const response = await fetch(url, fetchOptions);
-    console.log(response);
+
     const json = await response.json();
     console.log(json); 
-    // location.href = "/profile.html";
+    if (response.status === 200) {
+      location.href = "/profile.html";
+      console.log("Login success");
+    } else {
+      console.log("Could not log in");
+    } return false;
   } catch(error){
     console.log(error);
   }
@@ -101,19 +67,23 @@ const postsUrl = `${api_base_url}/api/v1/social/posts`
 login.onclick = function (ev) {
   ev.preventDefault()
 
-
-  let email = document.getElementById("email").value;
+  let email = document.getElementById("email").value.toLowerCase();
   let password = document.getElementById("password").value;
 
 const userToLogin = {
   email: email,
   password: password,
-  // email: 'atleSecondTest@noroff.no',
-  // password: 'TrustNo1',
-};
 
-  console.log(userToLogin)
+  }
   loginUser(loginUrl, userToLogin),
-  getWithToken(postsUrl);
+  setTimeout(()=> {
+    getWithToken(postsUrl)
+ } ,3000);
+
 }
 
+function clearOutStorage() {
+  localStorage.clear();
+}
+
+clearOutStorage()
