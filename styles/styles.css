@@ -48,3 +48,7 @@ input {
   color: red;
   text-align: center;
 }
+
+.post {
+  margin: 20px;
+}

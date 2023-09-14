@@ -25,8 +25,10 @@ async function loginUser(url, userData) {
     console.log(json);
     const accessToken = json.accessToken;
     const userEmail = json.email;
-    const userPassword = json.name;
+    const userName = json.name;
     localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('email', userEmail);
+    localStorage.setItem('name', userName);
   } catch (error) {
     console.log(error);
   } 
@@ -77,7 +79,6 @@ const userToLogin = {
   password: password,
   }
   localStorage.setItem('password', password);
-  localStorage.setItem('email', email);
   loginUser(loginUrl, userToLogin),
   setTimeout(()=> {
     getWithToken(postsUrl)

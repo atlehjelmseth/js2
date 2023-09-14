@@ -1,20 +1,26 @@
+const userNameLocal = localStorage.getItem('name');
 const api_base_url = 'https://api.noroff.dev';
 const postsUrl = `${api_base_url}/api/v1/social/posts`
 const loginUrl = `${api_base_url}/api/v1/social/auth/login`
-const userPosts = `${api_base_url}/api/v1/social/profiles/${userName}/posts`;
+const userPostsUrl = `${api_base_url}/api/v1/social/profiles/${userNameLocal}/posts`;
 const profileInformation = document.querySelector(".profile-information");
+const userPosts = document.querySelector(".userposts");
+const token = localStorage.getItem('accessToken');
+const submit = document.querySelector('.submit');
 
+
+console.log(userNameLocal);
 
 const userToLogin = {
   email: localStorage.getItem('email'),
   password: localStorage.getItem('password'),
   }
 
-
-async function loginUser(url, userData) {
+/* Login user */
+async function loginUser(url, userData, method = 'POST') {
   try {
     const postData = {
-      method: 'POST',
+      method,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -27,7 +33,6 @@ async function loginUser(url, userData) {
     let userMail = json.email;
     profileInformation.innerHTML += `<p>Name: ${userName}</p>
                                      <p>Email: ${userMail}</p> `;
-    console.log(userPosts)
   } catch (error) {
     console.log(error);
   }
@@ -36,6 +41,7 @@ async function loginUser(url, userData) {
 
 loginUser(loginUrl, userToLogin)
 
+/* Add Token and list posts */
 async function getWithToken(url, method = 'GET') {
   try {
     console.log(url);
@@ -52,7 +58,7 @@ async function getWithToken(url, method = 'GET') {
     const jsonToken = await response.json();
     console.log(jsonToken); 
     for(let i = 0; i < jsonToken.length; i++) {
-      console.log(jsonToken[i].title);
+      // console.log(jsonToken[i].title);
     }
   } catch(error){
     console.log(error);
@@ -61,3 +67,82 @@ async function getWithToken(url, method = 'GET') {
 
 getWithToken(postsUrl)
 
+
+/* Load the users posts `*/
+
+async function loadUserPosts(url, method = 'GET') {
+  try {
+    console.log(url);
+    const fetchPosts = {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    };
+    const response = await fetch(url, fetchPosts);
+    const jsonPosts = await response.json();
+    console.log(jsonPosts); 
+    for(let i = 0; i < jsonPosts.length; i++) {
+      let postTitle = jsonPosts[i].title;
+      let postText = jsonPosts[i].body;
+      userPosts.innerHTML += `<div class="post"><div>${postTitle}</div>
+      <div>${postText}</div></div> `;
+    }
+
+  } catch(error){
+    console.log(error);
+  }
+}
+
+loadUserPosts(userPostsUrl)
+
+/* send comments */
+
+
+// const requestOptions = {
+//   method: 'POST',
+//   body: JSON.stringify({
+//     title: 'Another Test',
+//     body: 'This is from VSCODE',
+//   }),
+//   headers: {
+//     'Content-type': 'application/json; charset=UTF-8',
+//     Authorization: `Bearer ${token}`
+//   },
+// };
+
+// fetch(postsUrl, requestOptions)
+//   .then((response) => response.json())
+//   .then((json) => console.log(json));
+
+
+  
+submit.onclick = function (ev) {
+
+  const date = new Date();
+  let currentDate = date.toJSON();
+  let postTitle = (currentDate.slice(0,10));
+  let postTekst = document.getElementById("your-comment").value;
+
+
+  ev.preventDefault()
+const requestOptions = {
+  method: 'POST',
+  body: JSON.stringify({
+    title: `${postTitle}`,
+    body: `${postTekst}`,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+    Authorization: `Bearer ${token}`
+  },
+};
+
+fetch(postsUrl, requestOptions)
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+  setTimeout(()=> {
+    location.reload()
+ } ,500);
+}
