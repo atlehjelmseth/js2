@@ -6,7 +6,7 @@ const api_base_url = 'https://api.noroff.dev';
 
 const loginUrl = `${api_base_url}/api/v1/social/auth/login`
 const login = document.getElementById("login");
-
+const wrong = document.querySelector(".wrongemailpassword");
 
 
 
@@ -24,16 +24,18 @@ async function loginUser(url, userData) {
     const json = await response.json();
     console.log(json);
     const accessToken = json.accessToken;
-    localStorage.setItem('accessToken', accessToken)
+    const userEmail = json.email;
+    const userPassword = json.name;
+    localStorage.setItem('accessToken', accessToken);
   } catch (error) {
     console.log(error);
-  }
-  
+  } 
 }
 
 // loginUser(loginUrl, userToLogin);
 
 async function getWithToken(url, method = 'GET') {
+  wrong.innerHTML = '';
   try {
     console.log(url);
     const token = localStorage.getItem('accessToken');
@@ -53,7 +55,7 @@ async function getWithToken(url, method = 'GET') {
       location.href = "/profile.html";
       console.log("Login success");
     } else {
-      console.log("Could not log in");
+      wrong.innerHTML += `<p class="error">Wrong email or password, please try again</p>`;
     } return false;
   } catch(error){
     console.log(error);
@@ -73,12 +75,13 @@ login.onclick = function (ev) {
 const userToLogin = {
   email: email,
   password: password,
-
   }
+  localStorage.setItem('password', password);
+  localStorage.setItem('email', email);
   loginUser(loginUrl, userToLogin),
   setTimeout(()=> {
     getWithToken(postsUrl)
- } ,3000);
+ } ,500);
 
 }
 

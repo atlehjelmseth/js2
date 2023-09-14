@@ -1,6 +1,7 @@
 const api_base_url = 'https://api.noroff.dev';
 const register = document.getElementById("register");
 const registerUrl = `${api_base_url}/api/v1/social/auth/register`;
+const error = document.querySelector(".error");
 /**
  * Register the user to the API
  * @param {string} url 
@@ -10,6 +11,7 @@ const registerUrl = `${api_base_url}/api/v1/social/auth/register`;
  * ```
  */
 async function registerUser(url, userData) {
+  error.innerHTML = '';
   try {
     const postData = {
       method: 'POST',
@@ -29,7 +31,17 @@ async function registerUser(url, userData) {
       console.log("Registration success");
     } else {
       console.log("Could not registrate new user");
-    } return false;
+    } 
+    if(json.statusCode === 400) {
+      for(let i = 0; i < json.errors.length; i++) {
+        console.log(json.errors[i].message);
+        const errorHtml = json.errors[i].message;
+        error.innerHTML += `<p class="error">${errorHtml}</p>`;
+      }
+      
+    }else {
+      console.log("ey OK")
+    }
   } catch(error) {
     console.log(error);
   }
@@ -49,3 +61,5 @@ const userToRegister = {
   }
   registerUser(registerUrl, userToRegister)
 }
+
+
