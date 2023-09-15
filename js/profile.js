@@ -7,7 +7,7 @@ const profileInformation = document.querySelector(".profile-information");
 const userPosts = document.querySelector(".userposts");
 const token = localStorage.getItem('accessToken');
 const submit = document.querySelector('.submit');
-
+const deletePost = document.querySelector('.delete');
 
 console.log(userNameLocal);
 
@@ -87,7 +87,7 @@ async function loadUserPosts(url, method = 'GET') {
       let postTitle = jsonPosts[i].title;
       let postText = jsonPosts[i].body;
       userPosts.innerHTML += `<div class="post"><div>${postTitle}</div>
-      <div>${postText}</div></div> `;
+      <div>${postText}</div><button class="delete">Delete post</button></div> `;
     }
 
   } catch(error){
@@ -97,26 +97,8 @@ async function loadUserPosts(url, method = 'GET') {
 
 loadUserPosts(userPostsUrl)
 
-/* send comments */
 
-
-// const requestOptions = {
-//   method: 'POST',
-//   body: JSON.stringify({
-//     title: 'Another Test',
-//     body: 'This is from VSCODE',
-//   }),
-//   headers: {
-//     'Content-type': 'application/json; charset=UTF-8',
-//     Authorization: `Bearer ${token}`
-//   },
-// };
-
-// fetch(postsUrl, requestOptions)
-//   .then((response) => response.json())
-//   .then((json) => console.log(json));
-
-
+/* Send comment */
   
 submit.onclick = function (ev) {
 
@@ -133,12 +115,12 @@ const requestOptions = {
     title: `${postTitle}`,
     body: `${postTekst}`,
   }),
+
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
     Authorization: `Bearer ${token}`
   },
 };
-
 fetch(postsUrl, requestOptions)
   .then((response) => response.json())
   .then((json) => console.log(json));
@@ -146,3 +128,30 @@ fetch(postsUrl, requestOptions)
     location.reload()
  } ,500);
 }
+
+/* Delete post */
+
+
+async function deletePosts(url, method = 'GET') {
+  try {
+    console.log(url);
+    const fetchPosts = {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    };
+    const response = await fetch(url, fetchPosts);
+    const jsonPosts = await response.json();
+    console.log(jsonPosts); 
+    for(let i = 0; i < jsonPosts.length; i++) {
+      console.log(jsonPosts[i].id);
+    }
+
+  } catch(error){
+    console.log(error);
+  }
+}
+
+deletePosts(userPostsUrl)
