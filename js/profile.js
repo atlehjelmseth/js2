@@ -7,7 +7,6 @@ const profileInformation = document.querySelector(".profile-information");
 const userPosts = document.querySelector(".userposts");
 const token = localStorage.getItem('accessToken');
 const submit = document.querySelector('.submit');
-const deletePost = document.querySelector('.delete');
 
 console.log(userNameLocal);
 
@@ -68,13 +67,13 @@ async function getWithToken(url, method = 'GET') {
 getWithToken(postsUrl)
 
 
-/* Load the users posts `*/
+/* Load the users posts & delete posts`*/
 
-async function loadUserPosts(url, method = 'GET') {
+async function loadUserPosts(url) {
   try {
     console.log(url);
     const fetchPosts = {
-      method,
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
@@ -82,17 +81,80 @@ async function loadUserPosts(url, method = 'GET') {
     };
     const response = await fetch(url, fetchPosts);
     const jsonPosts = await response.json();
+    
+
+  
     console.log(jsonPosts); 
     for(let i = 0; i < jsonPosts.length; i++) {
       let postTitle = jsonPosts[i].title;
       let postText = jsonPosts[i].body;
-      userPosts.innerHTML += `<div class="post"><div>${postTitle}</div>
-      <div>${postText}</div><button class="delete">Delete post</button></div> `;
+      var postId = jsonPosts[i].id;
+      
+      console.log(postId)
+
+      var deleteUrl = postsUrl+`/${postId}`;
+      console.log(deleteUrl);
+
+      
+
+
+      userPosts.innerHTML += `<div class="post"><div>${postTitle} ID: ${postId}</div>
+      <div>${postText}</div><a class="postButtons" id="deletepost">Delete post</a></div> `
+          
+
+
+      // var deletePost = document.getElementById('deletepost');
+      // deletePost.onclick = function () {
+          // for(let i = 0; i < jsonPosts.length; i++) {
+            // console.log(jsonPosts)
+          //   //   setTimeout(()=> {
+          //   //     location.reload()
+          //   //  } ,500)
+          //     fetch(deleteUrl, {
+          //      method: 'DELETE',
+          //      headers: {
+          //       'Content-Type': 'application/json',
+          //       Authorization: `Bearer ${token}`
+          //     },
+          //       }).then((response) => {
+          //          console.log(response);
+          //       });
+          // }
+        // }
+
+
+      // const updatePost = document.getElementById('updatePost');
+      // deletePost.onclick = function (ev) {
+      //   setTimeout(()=> {
+      //     location.reload()
+      //  } ,500)
+      //   fetch(deleteUrl, {
+      //    method: 'PUT',
+      //    body: JSON.stringify({
+      //     body:'NEW text',
+      //    }),
+      //    headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${token}`
+      //   }, 
+      //     }).then((response) => {
+      //        console.log(response);
+      //     });
+      // }
+      var deletePost = document.getElementById('deletepost');
+      deletePost.onclick = function () {
+        console.log(postId)
+      }
+      
+      ;
+      
     }
 
+    
   } catch(error){
     console.log(error);
   }
+
 }
 
 loadUserPosts(userPostsUrl)
@@ -129,29 +191,3 @@ fetch(postsUrl, requestOptions)
  } ,500);
 }
 
-/* Delete post */
-
-
-async function deletePosts(url, method = 'GET') {
-  try {
-    console.log(url);
-    const fetchPosts = {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-    };
-    const response = await fetch(url, fetchPosts);
-    const jsonPosts = await response.json();
-    console.log(jsonPosts); 
-    for(let i = 0; i < jsonPosts.length; i++) {
-      console.log(jsonPosts[i].id);
-    }
-
-  } catch(error){
-    console.log(error);
-  }
-}
-
-deletePosts(userPostsUrl)
