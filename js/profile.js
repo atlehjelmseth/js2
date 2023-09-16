@@ -33,8 +33,8 @@ async function loginUser(url, userData, method = 'POST') {
     const json = await response.json();
     let userName = json.name;
     let userMail = json.email;
-    profileInformation.innerHTML += `<p>Name: ${userName}</p>
-                                     <p>Email: ${userMail}</p> `;
+    profileInformation.innerHTML += `<p class="name">Name: ${userName}</p>
+                                     <p class="email">Email: ${userMail}</p> `;
   } catch (error) {
     console.log(error);
   }
@@ -69,7 +69,7 @@ async function getWithToken(url, method = 'GET') {
 getWithToken(postsUrl)
 
 
-/* Load the users posts & make delete and update-buttons*/
+/* Load the users posts & make delete, update and like-buttons*/
 
 async function loadUserPosts(url) {
   try {
@@ -88,17 +88,20 @@ async function loadUserPosts(url) {
   
     console.log(jsonPosts); 
     for(let i = 0; i < jsonPosts.length; i++) {
+      if (i === 5) { break; }
       let postTitle = jsonPosts[i].title;
       let postText = jsonPosts[i].body;
       var postId = jsonPosts[i].id;
+      var postLike = jsonPosts[i]._count.reactions;
       
       console.log(postId)
+      console.log(postLike)
 
       var deleteUrl = postsUrl+`/${postId}`;
       console.log(deleteUrl);
 
-      userPosts.insertAdjacentHTML("beforeend", `<div class="post"><div>${postTitle} ID: ${postId}</div>
-      <div>${postText}</div><form>`);
+      userPosts.insertAdjacentHTML("beforeend", `<div class="post"><p>${postTitle} ID: ${postId}</p>
+      <p>${postText}</p><br><p>Number of likes: ${postLike}</p>`);
       
       const makeDeleteButton = document.createElement("button");
       makeDeleteButton.innerText = `Delete`;
@@ -107,8 +110,12 @@ async function loadUserPosts(url) {
       const makeUpdateButton = document.createElement("button");
       makeUpdateButton.innerText = `Update`;
       makeUpdateButton.setAttribute("id", "updatepost");
+
+      const makeLikeButton = document.createElement("button");
+      makeLikeButton.innerText = `👍`;
+      makeLikeButton.setAttribute("id", "likepost");
       
-      function someFunc(postId) {
+      function deleteFunction(postId) {
         makeDeleteButton.addEventListener("click", function() {
           console.log(postId)
           const deletePost = {
@@ -127,10 +134,56 @@ async function loadUserPosts(url) {
         })
       }      
 
-      someFunc(postId);
+      function updateFunction(postId) {
+        makeUpdateButton.addEventListener("click", function() {
+          console.log(postId)
+          const updatePost = {
+          method: 'PUT',
+          body: JSON.stringify({
+            title: 'Updated ',
+            body: 'This text is updated',
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${token}`
+          },
+        };
+        fetch(`${postsUrl}/${postId}`, updatePost)
+          .then((response) => response.json())
+          .then((json) => console.log(json));
+          setTimeout(()=> {
+            location.reload()
+         } ,500);
+        })
+      }
+
+      function likeFunction(postId) {
+        makeLikeButton.addEventListener("click", function() {
+          console.log(postId)
+          const likePost = {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        };
+        console.log(`${postsUrl}/${postId}/react/👍`)
+        fetch(`${postsUrl}/${postId}/react/👍`, likePost)
+          .then((response) => response.json())
+          .then((json) => console.log(json));
+          setTimeout(()=> {
+            location.reload()
+         } ,500);
+        })
+      }      
+
+
+      deleteFunction(postId);
+      updateFunction(postId);
+      likeFunction(postId);
 
       userPosts.appendChild(makeDeleteButton);
-      userPosts.appendChild(makeUpdateButton);      
+      userPosts.appendChild(makeUpdateButton);
+      userPosts.appendChild(makeLikeButton); 
     }
 
     
@@ -173,3 +226,5 @@ fetch(postsUrl, requestOptions)
     location.reload()
  } ,500);
 }
+
+

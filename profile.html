@@ -7,15 +7,25 @@
   <title>Sosial Media Site</title>
   <link href="styles/styles.css" rel="stylesheet">
 </head>
-<div class="profile-information"></div>
-
-<form>
-  <label>
-    <textarea id="your-comment" placeholder="* Please enter your comment"></textarea>
-  </label>
-  <button class="submit">Send!</button>
-</form>
-<div id="userposts">
+<div class="profile-information">
+  <img class="profileimage" src="/img/profile_fox.jpg">
+</div>
+<div class="main">
+  <div id="userposts">
+    <p>Latest posts</p>
+    <label for="filters"></label>
+    <select name="filter" id="filter">
+      <option value="first">First</option>
+      <option value="latest">Latest</option>
+    </select>
+  </div>
+  <form>
+    <label>
+      <textarea id="your-comment" placeholder="* Please enter your comment"></textarea>
+    </label>
+    <button class="submit">Send!</button>
+  </form>
+  <div class="feed">Other profiles</div>
 </div>
 
 <body>
