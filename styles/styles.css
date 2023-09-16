@@ -10,6 +10,11 @@ body {
   border-radius: 50%;
 }
 
+.logout {
+  color: white;
+  text-align: right;
+  margin: -60px 10px 0px 0px;
+}
 
 .newuser {
   text-align: center;
