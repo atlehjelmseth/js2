@@ -1,8 +1,6 @@
 body {
   margin: auto;
   font-family:"garamond-premier-pro", sans-serif;
-  background-color: var(--darkest-color-green);
-
 }
 
 .profileimage {
@@ -20,10 +18,12 @@ body {
 .name {
   text-transform: capitalize;
   margin: 0;
+  color: white;
 }
 
 .email {
   margin: 0;
+  color: white;
 }
 
 
@@ -35,9 +35,34 @@ body {
   width: 100%;
   text-align: center;
   height: 350px;
-  background-color: lightgreen;
+  background-color: black;
 }
 
+.main {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.user {
+  width: 80%;
+}
+
+.feed {
+  width: 80%;
+}
+
+
+.headlinep {
+text-align: center;
+}
+
+#filter {
+  display: block;
+margin: 0 auto;
+}
 .form {
   
   display: flex;
@@ -55,7 +80,7 @@ button {
   border: none;
   background-color: black;
   color: white;
-  
+  margin: auto;
 }
 
 button:hover {
@@ -66,7 +91,7 @@ button:hover {
   background-color: white;
   color: black;
   display: inline-block;
-  margin: 5px 20px 20px 20px;
+  margin: 14px -6px 20px 47px;
 }
 
 #deletepost:hover {
@@ -87,16 +112,46 @@ input {
   border: 1px solid;
 }
 
+.search {
+  display: block;
+  margin: 10px auto;
+
+}
+
+textarea {
+  display: block;
+  width: 80%;
+  min-height: 150px;
+  margin: 20px auto;
+  border-radius: 10px;
+}
+
+.feedpost {
+  background-color: white;
+  min-height: 50px;
+  border: 1px solid black;
+  margin: 10px auto 10px auto;
+  border-radius: 10px;
+  width: 80%;
+}
+
+.feedpost p {
+  text-align: center;
+  padding: 10px;
+}
+
 .error {
   color: red;
   text-align: center;
 }
 
 .post {
-  margin: 20px 20px 0px 20px;
+  background-color: white;
+  margin: 80px auto 0px auto;
   border: solid 2px; 
   border-radius: 10px;
-  max-width: 500px;
+  width: 80%;
+  box-shadow: 2px 3px rgba(0, 0, 0, 0.288);
 }
 
 .post p {

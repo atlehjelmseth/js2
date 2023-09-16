@@ -11,21 +11,30 @@
   <img class="profileimage" src="/img/profile_fox.jpg">
 </div>
 <div class="main">
-  <div id="userposts">
-    <p>Latest posts</p>
+  <div class="user">
+    <div id="userposts">
+      <p class="headlinep">Latest posts</p>
+
+    </div>
+    <form>
+      <label>
+        <textarea id="your-comment" placeholder="* Whats on your mind today?"></textarea>
+      </label>
+      <button class="submit">Send!</button>
+    </form>
+  </div>
+  <div class="feed">
+    <p class="headlinep">Feed</p>
     <label for="filters"></label>
     <select name="filter" id="filter">
       <option value="first">First</option>
-      <option value="latest">Latest</option>
+      <option value="last">Last</option>
+      <option value="id">By ID</option>
     </select>
+    <input class="search" placeholder="Search titles...">
+    <div id="userfeed"></div>
+
   </div>
-  <form>
-    <label>
-      <textarea id="your-comment" placeholder="* Please enter your comment"></textarea>
-    </label>
-    <button class="submit">Send!</button>
-  </form>
-  <div class="feed">Other profiles</div>
 </div>
 
 <body>

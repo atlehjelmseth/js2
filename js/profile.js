@@ -7,6 +7,8 @@ const profileInformation = document.querySelector(".profile-information");
 const userPosts = document.getElementById("userposts");
 const token = localStorage.getItem('accessToken');
 const submit = document.querySelector('.submit');
+const userFeed = document.getElementById("userfeed");
+const search = document.querySelector(".search");
 
 
 console.log(userNameLocal);
@@ -43,7 +45,7 @@ async function loginUser(url, userData, method = 'POST') {
 
 loginUser(loginUrl, userToLogin)
 
-/* Add Token and list posts */
+/* Add Token and list all posts */
 async function getWithToken(url, method = 'GET') {
   try {
     console.log(url);
@@ -60,6 +62,11 @@ async function getWithToken(url, method = 'GET') {
     const jsonToken = await response.json();
     console.log(jsonToken); 
     for(let i = 0; i < jsonToken.length; i++) {
+      if (i === 10) { break; }
+      const feedTitles = jsonToken[i].title;
+      const feedPosts = jsonToken[i].body;
+
+      userFeed.innerHTML += `<div class="feedpost"><p>Title: ${feedTitles}</p><p>Text: ${feedPosts}</p></div>`
     }
   } catch(error){
     console.log(error);
@@ -227,4 +234,48 @@ fetch(postsUrl, requestOptions)
  } ,500);
 }
 
+
+/* Search bar */
+
+search.onkeyup = async function (event) {
+  try {
+    const searchPosts = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    }; 
+    const response = await fetch(postsUrl, searchPosts);
+    const results = await response.json();  
+    console.log(results); 
+
+    const searchValue = event.target.value.toLowerCase();
+    
+    const searchResults = results.filter(function (test) {
+      if (test.title.toLowerCase().includes(searchValue)) {
+          return true;
+      }
+  });
+
+  userFeed.innerHTML = "";
+
+  for(let i = 0; i < searchResults.length; i++){
+    if (i === 10) { break; }
+    const feedTitle = searchResults[i].title;
+    const feedText = searchResults[i].body;
+
+    console.log(feedTitle);
+    console.log(feedText);
+    userFeed.innerHTML += `<div class="feedpost"><p>Title: ${feedTitle}</p><p>Text: ${feedText}</p></div>`;
+  }
+
+
+  }catch{
+    console.log("error");
+  }
+
+}
+
+/* Filter */
 
