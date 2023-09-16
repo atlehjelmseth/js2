@@ -4,9 +4,10 @@ const postsUrl = `${api_base_url}/api/v1/social/posts`
 const loginUrl = `${api_base_url}/api/v1/social/auth/login`
 const userPostsUrl = `${api_base_url}/api/v1/social/profiles/${userNameLocal}/posts`;
 const profileInformation = document.querySelector(".profile-information");
-const userPosts = document.querySelector(".userposts");
+const userPosts = document.getElementById("userposts");
 const token = localStorage.getItem('accessToken');
 const submit = document.querySelector('.submit');
+
 
 console.log(userNameLocal);
 
@@ -15,6 +16,8 @@ const userToLogin = {
   password: localStorage.getItem('password'),
   }
 
+
+  
 /* Login user */
 async function loginUser(url, userData, method = 'POST') {
   try {
@@ -57,7 +60,6 @@ async function getWithToken(url, method = 'GET') {
     const jsonToken = await response.json();
     console.log(jsonToken); 
     for(let i = 0; i < jsonToken.length; i++) {
-      // console.log(jsonToken[i].title);
     }
   } catch(error){
     console.log(error);
@@ -67,7 +69,7 @@ async function getWithToken(url, method = 'GET') {
 getWithToken(postsUrl)
 
 
-/* Load the users posts & delete posts`*/
+/* Load the users posts & make delete and update-buttons*/
 
 async function loadUserPosts(url) {
   try {
@@ -95,59 +97,40 @@ async function loadUserPosts(url) {
       var deleteUrl = postsUrl+`/${postId}`;
       console.log(deleteUrl);
 
+      userPosts.insertAdjacentHTML("beforeend", `<div class="post"><div>${postTitle} ID: ${postId}</div>
+      <div>${postText}</div><form>`);
       
+      const makeDeleteButton = document.createElement("button");
+      makeDeleteButton.innerText = `Delete`;
+      makeDeleteButton.setAttribute("id", "deletepost");
 
-
-      userPosts.innerHTML += `<div class="post"><div>${postTitle} ID: ${postId}</div>
-      <div>${postText}</div><a class="postButtons" id="deletepost">Delete post</a></div> `
-          
-
-
-      // var deletePost = document.getElementById('deletepost');
-      // deletePost.onclick = function () {
-          // for(let i = 0; i < jsonPosts.length; i++) {
-            // console.log(jsonPosts)
-          //   //   setTimeout(()=> {
-          //   //     location.reload()
-          //   //  } ,500)
-          //     fetch(deleteUrl, {
-          //      method: 'DELETE',
-          //      headers: {
-          //       'Content-Type': 'application/json',
-          //       Authorization: `Bearer ${token}`
-          //     },
-          //       }).then((response) => {
-          //          console.log(response);
-          //       });
-          // }
-        // }
-
-
-      // const updatePost = document.getElementById('updatePost');
-      // deletePost.onclick = function (ev) {
-      //   setTimeout(()=> {
-      //     location.reload()
-      //  } ,500)
-      //   fetch(deleteUrl, {
-      //    method: 'PUT',
-      //    body: JSON.stringify({
-      //     body:'NEW text',
-      //    }),
-      //    headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: `Bearer ${token}`
-      //   }, 
-      //     }).then((response) => {
-      //        console.log(response);
-      //     });
-      // }
-      var deletePost = document.getElementById('deletepost');
-      deletePost.onclick = function () {
-        console.log(postId)
-      }
+      const makeUpdateButton = document.createElement("button");
+      makeUpdateButton.innerText = `Update`;
+      makeUpdateButton.setAttribute("id", "updatepost");
       
-      ;
-      
+      function someFunc(postId) {
+        makeDeleteButton.addEventListener("click", function() {
+          console.log(postId)
+          const deletePost = {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${token}`
+          },
+        };
+        fetch(`${postsUrl}/${postId}`, deletePost)
+          .then((response) => response.json())
+          .then((json) => console.log(json));
+          setTimeout(()=> {
+            location.reload()
+         } ,500);
+        })
+      }      
+
+      someFunc(postId);
+
+      userPosts.appendChild(makeDeleteButton);
+      userPosts.appendChild(makeUpdateButton);      
     }
 
     
@@ -171,7 +154,7 @@ submit.onclick = function (ev) {
 
 
   ev.preventDefault()
-const requestOptions = {
+  const requestOptions = {
   method: 'POST',
   body: JSON.stringify({
     title: `${postTitle}`,
@@ -190,4 +173,3 @@ fetch(postsUrl, requestOptions)
     location.reload()
  } ,500);
 }
-
