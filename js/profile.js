@@ -18,6 +18,17 @@ const userToLogin = {
   }
 
 
+/**
+ * 
+ * @param {string} url 
+ * @param {any} userData 
+ * @param {POST} method 
+ * 
+ * ```JS
+ * loginUser(loginUrl, userToLogin)
+ *```
+ */
+
 
 /* Login user */
 async function loginUser(url, userData, method = 'POST') {
@@ -44,6 +55,18 @@ async function loginUser(url, userData, method = 'POST') {
 loginUser(loginUrl, userToLogin)
 
 /* Add Token and list all posts */
+
+/**
+ * 
+ * @param {string*} url 
+ * @param {GET} method
+ * 
+ * ```JS
+ * getWithToken(postsUrl)
+ * ```
+ */
+
+
 async function getWithToken(url, method = 'GET') {
   try {
     const token = localStorage.getItem('accessToken');
@@ -72,6 +95,16 @@ getWithToken(postsUrl)
 
 
 /* Load the users posts & make delete, update and like-buttons*/
+
+/**
+ * 
+ * @param {STRING} url 
+ * @param {GET, PUT, DELETE} method
+ * 
+ * ```JS
+ * loadUserPosts(userPostsUrl)
+ * ````
+ */
 
 async function loadUserPosts(url) {
   try {
@@ -188,6 +221,15 @@ loadUserPosts(userPostsUrl)
 
 /* Send comment */
 
+/**
+ * 
+ * @param {POST} method
+ * 
+ * ```JS
+ * submit.onclick
+ * ```
+ */
+
 submit.onclick = function (ev) {
 
   const date = new Date();
@@ -219,6 +261,14 @@ fetch(postsUrl, requestOptions)
 
 
 /* Search bar */
+
+/** 
+ * @param {GET} method 
+ * 
+ * ```JS
+ * search.onkeyup
+ * ``
+ */
 
 search.onkeyup = async function (event) {
   try {
@@ -254,6 +304,14 @@ search.onkeyup = async function (event) {
 }
 
 /* Filter */
+
+/**
+ * @param {GET} method
+ * 
+ * ```` JS
+ * filter, newst first to oldest first
+ * ```` 
+ */
 
 const selectFilter = document.getElementById("filter");
 

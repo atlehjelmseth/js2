@@ -1,14 +1,20 @@
 const api_base_url = 'https://api.noroff.dev';
-
-
-// email: 'atleSecondTest@noroff.no',
-// password: 'TrustNo1',
-
 const loginUrl = `${api_base_url}/api/v1/social/auth/login`
 const login = document.getElementById("login");
 const wrong = document.querySelector(".wrongemailpassword");
+const postsUrl = `${api_base_url}/api/v1/social/posts`
 
 
+/* User login and set get/store token */
+
+/**
+ * 
+ * @param {string} url 
+ * @param {any} userData 
+ * @param {POST} method
+ *``` JS 
+ * loginUser(url, userData)
+ */
 
 async function loginUser(url, userData) {
   try {
@@ -32,7 +38,15 @@ async function loginUser(url, userData) {
   } 
 }
 
-// loginUser(loginUrl, userToLogin);
+/* Get request with bearer token */
+
+/**
+ * 
+ * @param {string} url 
+ * @param {GET} method 
+ * ``` JS
+ * getWithToken(url, method = 'GET')
+ */
 
 async function getWithToken(url, method = 'GET') {
   wrong.innerHTML = '';
@@ -60,9 +74,15 @@ async function getWithToken(url, method = 'GET') {
   }
 }
 
-const postsUrl = `${api_base_url}/api/v1/social/posts`
 
-// getWithToken(postsUrl);
+/* Login from button */
+
+/**
+ * 
+ * @param {string} userToLogin 
+ * ```JS
+ * Onclick login
+ */
 
 login.onclick = function (ev) {
   ev.preventDefault()
