@@ -252,8 +252,9 @@ search.onkeyup = async function (event) {
 
     const searchValue = event.target.value.toLowerCase();
 
-    const searchResults = results.filter(function (test) {
-      if (test.title.toLowerCase().includes(searchValue)) {
+    const searchResults = results.filter(function (search) {
+      if (JSON.stringify(search.body).toLowerCase().includes(searchValue) || JSON.stringify(search.title).toLowerCase().includes(searchValue)) {
+        console.log(search.body);
           return true;
       }
   });
@@ -262,12 +263,7 @@ search.onkeyup = async function (event) {
 
   for(let i = 0; i < searchResults.length; i++){
     if (i === 10) { break; }
-    const feedTitle = searchResults[i].title;
-    const feedText = searchResults[i].body;
-
-    console.log(feedTitle);
-    console.log(feedText);
-    userFeed.innerHTML += `<div class="feedpost"><p>Title: ${feedTitle}</p><p>Text: ${feedText}</p></div>`;
+    userFeed.innerHTML += `<div class="feedpost"><p>Title: ${searchResults[i].title}</p><p>Text: ${searchResults[i].body}</p></div>`;
   }
 
 
