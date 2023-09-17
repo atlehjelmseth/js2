@@ -45,6 +45,16 @@ async function registerUser(url, userData) {
 
 }
 
+/**
+ * 
+ * @param {string} url 
+ * @param {any} userToRegister
+ * 
+ * ``` JS
+ * registerUser(registerUrl, userToRegister)
+ * ```
+ */
+
 register.onclick = function (ev) {
   ev.preventDefault()
   let name = document.getElementById("name").value;
