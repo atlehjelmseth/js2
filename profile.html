@@ -6,40 +6,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sosial Media Site</title>
   <link href="styles/styles.css" rel="stylesheet">
+  <link rel="shortcut icon" type="image/png" href="img/xicon.png">
 </head>
-<div class="profile-information">
-  <a href="/index.html" class="logout">LOG OUT</a>
-  <img class="profileimage" src="/img/profile_fox.jpg">
-</div>
-<div class="main">
-  <div class="user">
-    <div id="userposts">
-      <p class="headlinep">Latest posts</p>
-
-    </div>
-    <form>
-      <label>
-        <textarea id="your-comment" placeholder="* Whats on your mind today?"></textarea>
-      </label>
-      <button class="submit">Send!</button>
-    </form>
-  </div>
-  <div class="feed">
-    <p class="headlinep">Feed</p>
-    <div class="feedselections">
-      <input class="search" placeholder="Search...">
-      <select name="filter" id="filter">
-        <option value="first">Newest first</option>
-        <option value="last">Oldest first</option>
-      </select>
-
-    </div>
-    <div id="userfeed"></div>
-
-  </div>
-</div>
 
 <body>
+  <div class="profile-information">
+    <a href="/index.html" class="logout">LOG OUT</a>
+    <img class="profileimage" src="/img/profile_fox.jpg">
+  </div>
+  <div class="main">
+    <div class="user">
+      <div id="userposts">
+        <p class="headlinep">Latest posts</p>
+
+      </div>
+      <form>
+        <label>
+          <textarea id="your-comment" placeholder="* Whats on your mind today?"></textarea>
+        </label>
+        <button class="submit">Send!</button>
+      </form>
+    </div>
+    <div class="feed">
+      <p class="headlinep">Feed</p>
+      <div class="feedselections">
+        <input class="search" placeholder="Search...">
+        <select name="filter" id="filter">
+          <option value="first">Newest first</option>
+          <option value="last">Oldest first</option>
+        </select>
+
+      </div>
+      <div id="userfeed"></div>
+
+    </div>
+  </div>
+
+
   <script src=" /js/profile.js">
   </script>
 </body>
