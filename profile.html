@@ -8,6 +8,7 @@
   <link href="styles/styles.css" rel="stylesheet">
 </head>
 <div class="profile-information">
+  <a href="/index.html" class="logout">LOG OUT</a>
   <img class="profileimage" src="/img/profile_fox.jpg">
 </div>
 <div class="main">
@@ -25,13 +26,11 @@
   </div>
   <div class="feed">
     <p class="headlinep">Feed</p>
-    <label for="filters"></label>
     <select name="filter" id="filter">
-      <option value="first">First</option>
-      <option value="last">Last</option>
-      <option value="id">By ID</option>
+      <option value="first">Newest first</option>
+      <option value="last">Oldest first</option>
     </select>
-    <input class="search" placeholder="Search titles...">
+    <input class="search" placeholder="Search...">
     <div id="userfeed"></div>
 
   </div>

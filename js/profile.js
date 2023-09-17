@@ -11,7 +11,6 @@ const userFeed = document.getElementById("userfeed");
 const search = document.querySelector(".search");
 
 
-console.log(userNameLocal);
 
 const userToLogin = {
   email: localStorage.getItem('email'),
@@ -19,7 +18,7 @@ const userToLogin = {
   }
 
 
-  
+
 /* Login user */
 async function loginUser(url, userData, method = 'POST') {
   try {
@@ -31,7 +30,6 @@ async function loginUser(url, userData, method = 'POST') {
       body: JSON.stringify(userData),
     };
     const response = await fetch(url, postData);
-    console.log(response);
     const json = await response.json();
     let userName = json.name;
     let userMail = json.email;
@@ -40,7 +38,7 @@ async function loginUser(url, userData, method = 'POST') {
   } catch (error) {
     console.log(error);
   }
-  
+
 }
 
 loginUser(loginUrl, userToLogin)
@@ -48,9 +46,7 @@ loginUser(loginUrl, userToLogin)
 /* Add Token and list all posts */
 async function getWithToken(url, method = 'GET') {
   try {
-    console.log(url);
     const token = localStorage.getItem('accessToken');
-    console.log(token);
     const fetchOptions = {
       method,
       headers: {
@@ -60,7 +56,6 @@ async function getWithToken(url, method = 'GET') {
     };
     const response = await fetch(url, fetchOptions);
     const jsonToken = await response.json();
-    console.log(jsonToken); 
     for(let i = 0; i < jsonToken.length; i++) {
       if (i === 10) { break; }
       const feedTitles = jsonToken[i].title;
@@ -80,7 +75,6 @@ getWithToken(postsUrl)
 
 async function loadUserPosts(url) {
   try {
-    console.log(url);
     const fetchPosts = {
       method: 'GET',
       headers: {
@@ -90,26 +84,19 @@ async function loadUserPosts(url) {
     };
     const response = await fetch(url, fetchPosts);
     const jsonPosts = await response.json();
-    
 
-  
-    console.log(jsonPosts); 
+
     for(let i = 0; i < jsonPosts.length; i++) {
       if (i === 5) { break; }
       let postTitle = jsonPosts[i].title;
       let postText = jsonPosts[i].body;
       var postId = jsonPosts[i].id;
       var postLike = jsonPosts[i]._count.reactions;
-      
-      console.log(postId)
-      console.log(postLike)
 
-      var deleteUrl = postsUrl+`/${postId}`;
-      console.log(deleteUrl);
 
       userPosts.insertAdjacentHTML("beforeend", `<div class="post"><p>${postTitle} ID: ${postId}</p>
       <p>${postText}</p><br><p>Number of likes: ${postLike}</p>`);
-      
+
       const makeDeleteButton = document.createElement("button");
       makeDeleteButton.innerText = `Delete`;
       makeDeleteButton.setAttribute("id", "deletepost");
@@ -121,10 +108,9 @@ async function loadUserPosts(url) {
       const makeLikeButton = document.createElement("button");
       makeLikeButton.innerText = `👍`;
       makeLikeButton.setAttribute("id", "likepost");
-      
+
       function deleteFunction(postId) {
         makeDeleteButton.addEventListener("click", function() {
-          console.log(postId)
           const deletePost = {
           method: 'DELETE',
           headers: {
@@ -139,11 +125,10 @@ async function loadUserPosts(url) {
             location.reload()
          } ,500);
         })
-      }      
+      }
 
       function updateFunction(postId) {
         makeUpdateButton.addEventListener("click", function() {
-          console.log(postId)
           const updatePost = {
           method: 'PUT',
           body: JSON.stringify({
@@ -166,14 +151,12 @@ async function loadUserPosts(url) {
 
       function likeFunction(postId) {
         makeLikeButton.addEventListener("click", function() {
-          console.log(postId)
           const likePost = {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`
           },
         };
-        console.log(`${postsUrl}/${postId}/react/👍`)
         fetch(`${postsUrl}/${postId}/react/👍`, likePost)
           .then((response) => response.json())
           .then((json) => console.log(json));
@@ -181,7 +164,7 @@ async function loadUserPosts(url) {
             location.reload()
          } ,500);
         })
-      }      
+      }
 
 
       deleteFunction(postId);
@@ -190,10 +173,10 @@ async function loadUserPosts(url) {
 
       userPosts.appendChild(makeDeleteButton);
       userPosts.appendChild(makeUpdateButton);
-      userPosts.appendChild(makeLikeButton); 
+      userPosts.appendChild(makeLikeButton);
     }
 
-    
+
   } catch(error){
     console.log(error);
   }
@@ -204,7 +187,7 @@ loadUserPosts(userPostsUrl)
 
 
 /* Send comment */
-  
+
 submit.onclick = function (ev) {
 
   const date = new Date();
@@ -245,15 +228,13 @@ search.onkeyup = async function (event) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-    }; 
+    };
     const response = await fetch(postsUrl, searchPosts);
-    const results = await response.json();  
-    console.log(results); 
-
+    const results = await response.json();
     const searchValue = event.target.value.toLowerCase();
-    
-    const searchResults = results.filter(function (test) {
-      if (test.title.toLowerCase().includes(searchValue)) {
+
+    const searchResults = results.filter(function (search) {
+      if (JSON.stringify(search.body).toLowerCase().includes(searchValue) || JSON.stringify(search.title).toLowerCase().includes(searchValue)) {
           return true;
       }
   });
@@ -262,12 +243,7 @@ search.onkeyup = async function (event) {
 
   for(let i = 0; i < searchResults.length; i++){
     if (i === 10) { break; }
-    const feedTitle = searchResults[i].title;
-    const feedText = searchResults[i].body;
-
-    console.log(feedTitle);
-    console.log(feedText);
-    userFeed.innerHTML += `<div class="feedpost"><p>Title: ${feedTitle}</p><p>Text: ${feedText}</p></div>`;
+    userFeed.innerHTML += `<div class="feedpost"><p>Title: ${searchResults[i].title}</p><p>Text: ${searchResults[i].body}</p></div>`;
   }
 
 
@@ -279,3 +255,73 @@ search.onkeyup = async function (event) {
 
 /* Filter */
 
+const selectFilter = document.getElementById("filter");
+
+selectFilter.addEventListener('change', async function() {
+
+    try {
+    const filterPosts = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    };
+    const response = await fetch(postsUrl, filterPosts);
+    const results = await response.json();
+
+
+  userFeed.innerHTML = "";
+  
+  if(selectFilter.value === "last") {
+  for(let i = 0; i < results.length; i++){
+    
+    if (i === 10) { break; }
+    results.sort(
+      function(a,b){
+          if(a.id > b.id){
+              return 1;
+          }
+          else if(a.id < b.id){
+              return -1;
+          }
+          else {
+              return 0;
+          }
+
+      }
+  )
+  userFeed.innerHTML += `<div class="feedpost"><p>Title: ${results[i].title}</p><p>Text: ${results[i].body}</p></div>`;
+  }
+
+} else {
+
+  for(let i = 0; i < results.length; i++){
+    if (i === 10) { break; }
+    results.sort(
+      function(a,b){
+          if(a.id < b.id){
+              return 1;
+          }
+          else if(a.id > b.id){
+              return -1;
+          }
+          else {
+              return 0;
+          }
+
+      }
+  )
+
+
+  userFeed.innerHTML += `<div class="feedpost"><p>Title: ${results[i].title}</p><p>Text: ${results[i].body}</p></div>`;
+  }
+}
+
+  }catch{
+    console.log("error");
+  }
+
+
+
+})
