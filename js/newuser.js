@@ -21,9 +21,7 @@ async function registerUser(url, userData) {
       body: JSON.stringify(userData),
     };
     const response = await fetch(url, postData);
-    console.log(response);
     const json = await response.json();
-    console.log(json);
     if (response.status === 201) {
       setTimeout(()=> {
         location.href = "/index.html";
@@ -34,13 +32,12 @@ async function registerUser(url, userData) {
     } 
     if(json.statusCode === 400) {
       for(let i = 0; i < json.errors.length; i++) {
-        console.log(json.errors[i].message);
         const errorHtml = json.errors[i].message;
         error.innerHTML += `<p class="error">${errorHtml}</p>`;
       }
       
     }else {
-      console.log("ey OK")
+      console.log("Error")
     }
   } catch(error) {
     console.log(error);

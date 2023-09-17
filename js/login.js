@@ -20,9 +20,7 @@ async function loginUser(url, userData) {
       body: JSON.stringify(userData),
     };
     const response = await fetch(url, postData);
-    console.log(response);
     const json = await response.json();
-    console.log(json);
     const accessToken = json.accessToken;
     const userEmail = json.email;
     const userName = json.name;
@@ -39,9 +37,7 @@ async function loginUser(url, userData) {
 async function getWithToken(url, method = 'GET') {
   wrong.innerHTML = '';
   try {
-    console.log(url);
     const token = localStorage.getItem('accessToken');
-    console.log(token);
     const fetchOptions = {
       method,
       headers: {

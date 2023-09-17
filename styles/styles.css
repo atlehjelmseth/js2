@@ -1,6 +1,35 @@
-body {
-  margin: auto;
-  font-family:"garamond-premier-pro", sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "poppins", sans-serif;
+
+}
+
+.index {
+  background-color: black;
+  height: 100vh;
+}
+
+.x {
+  color: white;
+  text-align: center;
+  font-size: 30vh;
+}
+
+#login, #register {
+  margin: 30px;
+  background-color: white;
+  color: black;
+  border: solid 1px black;
+}
+
+#login:hover, #register:hover {
+  background-color: black;
+  color: white;
+  border: solid 1px white;
 }
 
 .profileimage {
@@ -8,6 +37,10 @@ body {
   height: auto;
   margin: 0px auto 20px auto;
   border-radius: 50%;
+}
+
+a {
+  color: white;
 }
 
 .logout {
@@ -45,6 +78,7 @@ body {
 
 .main {
   display: flex;
+  flex-direction: column;
   align-items: baseline;
   justify-content: center;
   max-width: 1000px;
@@ -52,21 +86,26 @@ body {
 }
 
 .user {
-  width: 80%;
+  width: 100%;
+  background-color: white;
 }
 
 .feed {
-  width: 80%;
+  width: 100%;
+  background-color: white;
 }
 
 
 .headlinep {
 text-align: center;
+padding: 10px;
 }
 
 #filter {
   display: block;
-margin: 0 auto;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 5px;
 }
 .form {
   
@@ -120,7 +159,10 @@ input {
 .search {
   display: block;
   margin: 10px auto;
+}
 
+::placeholder {
+  text-align: center;
 }
 
 textarea {
@@ -129,6 +171,10 @@ textarea {
   min-height: 150px;
   margin: 20px auto;
   border-radius: 10px;
+}
+
+#your-comment {
+  padding: 10px;
 }
 
 .feedpost {
@@ -152,7 +198,7 @@ textarea {
 
 .post {
   background-color: white;
-  margin: 80px auto 0px auto;
+  margin: 87px auto 0px auto;
   border: solid 2px; 
   border-radius: 10px;
   width: 80%;
@@ -161,4 +207,19 @@ textarea {
 
 .post p {
   margin: 20px;
+}
+
+
+@media (min-width: 625px) {
+.main {
+  flex-direction: row;
+  }
+  .user {
+    width: 80%;
+  }
+  
+  .feed {
+    width: 80%;
+  }
+  
 }

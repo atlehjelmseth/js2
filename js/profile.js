@@ -11,7 +11,6 @@ const userFeed = document.getElementById("userfeed");
 const search = document.querySelector(".search");
 
 
-console.log(userNameLocal);
 
 const userToLogin = {
   email: localStorage.getItem('email'),
@@ -31,7 +30,6 @@ async function loginUser(url, userData, method = 'POST') {
       body: JSON.stringify(userData),
     };
     const response = await fetch(url, postData);
-    console.log(response);
     const json = await response.json();
     let userName = json.name;
     let userMail = json.email;
@@ -48,9 +46,7 @@ loginUser(loginUrl, userToLogin)
 /* Add Token and list all posts */
 async function getWithToken(url, method = 'GET') {
   try {
-    console.log(url);
     const token = localStorage.getItem('accessToken');
-    console.log(token);
     const fetchOptions = {
       method,
       headers: {
@@ -60,7 +56,6 @@ async function getWithToken(url, method = 'GET') {
     };
     const response = await fetch(url, fetchOptions);
     const jsonToken = await response.json();
-    console.log(jsonToken);
     for(let i = 0; i < jsonToken.length; i++) {
       if (i === 10) { break; }
       const feedTitles = jsonToken[i].title;
@@ -80,7 +75,6 @@ getWithToken(postsUrl)
 
 async function loadUserPosts(url) {
   try {
-    console.log(url);
     const fetchPosts = {
       method: 'GET',
       headers: {
@@ -92,8 +86,6 @@ async function loadUserPosts(url) {
     const jsonPosts = await response.json();
 
 
-
-    console.log(jsonPosts);
     for(let i = 0; i < jsonPosts.length; i++) {
       if (i === 5) { break; }
       let postTitle = jsonPosts[i].title;
@@ -101,11 +93,6 @@ async function loadUserPosts(url) {
       var postId = jsonPosts[i].id;
       var postLike = jsonPosts[i]._count.reactions;
 
-      console.log(postId)
-      console.log(postLike)
-
-      var deleteUrl = postsUrl+`/${postId}`;
-      console.log(deleteUrl);
 
       userPosts.insertAdjacentHTML("beforeend", `<div class="post"><p>${postTitle} ID: ${postId}</p>
       <p>${postText}</p><br><p>Number of likes: ${postLike}</p>`);
@@ -124,7 +111,6 @@ async function loadUserPosts(url) {
 
       function deleteFunction(postId) {
         makeDeleteButton.addEventListener("click", function() {
-          console.log(postId)
           const deletePost = {
           method: 'DELETE',
           headers: {
@@ -143,7 +129,6 @@ async function loadUserPosts(url) {
 
       function updateFunction(postId) {
         makeUpdateButton.addEventListener("click", function() {
-          console.log(postId)
           const updatePost = {
           method: 'PUT',
           body: JSON.stringify({
@@ -166,14 +151,12 @@ async function loadUserPosts(url) {
 
       function likeFunction(postId) {
         makeLikeButton.addEventListener("click", function() {
-          console.log(postId)
           const likePost = {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`
           },
         };
-        console.log(`${postsUrl}/${postId}/react/👍`)
         fetch(`${postsUrl}/${postId}/react/👍`, likePost)
           .then((response) => response.json())
           .then((json) => console.log(json));
@@ -248,13 +231,10 @@ search.onkeyup = async function (event) {
     };
     const response = await fetch(postsUrl, searchPosts);
     const results = await response.json();
-    console.log(results);
-
     const searchValue = event.target.value.toLowerCase();
 
     const searchResults = results.filter(function (search) {
       if (JSON.stringify(search.body).toLowerCase().includes(searchValue) || JSON.stringify(search.title).toLowerCase().includes(searchValue)) {
-        console.log(search.body);
           return true;
       }
   });
@@ -289,7 +269,6 @@ selectFilter.addEventListener('change', async function() {
     };
     const response = await fetch(postsUrl, filterPosts);
     const results = await response.json();
-    console.log(results);
 
 
   userFeed.innerHTML = "";
@@ -312,8 +291,6 @@ selectFilter.addEventListener('change', async function() {
 
       }
   )
-  console.log(results[i].id);
-
   userFeed.innerHTML += `<div class="feedpost"><p>Title: ${results[i].title}</p><p>Text: ${results[i].body}</p></div>`;
   }
 
@@ -335,7 +312,7 @@ selectFilter.addEventListener('change', async function() {
 
       }
   )
-  console.log(results[i].id);
+
 
   userFeed.innerHTML += `<div class="feedpost"><p>Title: ${results[i].title}</p><p>Text: ${results[i].body}</p></div>`;
   }
@@ -346,5 +323,5 @@ selectFilter.addEventListener('change', async function() {
   }
 
 
-  console.log(`Value is  ${selectFilter.value}`);
+
 })
