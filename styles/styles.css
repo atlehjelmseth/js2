@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+@font-face {
+  font-family: 'x-files';
+  src: url(/fonts/x-files.ttf);
+}
+
+
 * {
   margin: 0;
   padding: 0;
@@ -17,6 +23,8 @@
   color: white;
   text-align: center;
   font-size: 30vh;
+  font-family: "x-files";
+  padding-top: 50px;
 }
 
 #login, #register {
@@ -46,7 +54,8 @@ a {
 .logout {
   color: white;
   text-align: right;
-  margin: -60px 10px 0px 0px;
+  margin: -60px 25px 0px 0px;
+  font-weight: 700;
 }
 
 .newuser {
@@ -57,11 +66,14 @@ a {
   text-transform: capitalize;
   margin: 0;
   color: white;
+  background-color: black;
 }
 
 .email {
   margin: 0;
   color: white;
+  background-color: black;
+  padding-bottom: 3px;
 }
 
 
@@ -73,7 +85,10 @@ a {
   width: 100%;
   text-align: center;
   height: 350px;
+  background-image: url(/img/mood.jpg);
+  background-size: cover;
   background-color: black;
+  background-position: center;
 }
 
 .main {
@@ -99,14 +114,17 @@ a {
 .headlinep {
 text-align: center;
 padding: 10px;
+border-bottom: 4px solid lightgrey;
 }
 
 #filter {
   display: block;
   margin: 0 auto;
   border-radius: 10px;
-  padding: 5px;
+  padding: 0 20px 0 20px;
+  height: 37px;
 }
+
 .form {
   
   display: flex;
@@ -135,7 +153,7 @@ button:hover {
   background-color: white;
   color: black;
   display: inline-block;
-  margin: 14px -6px 20px 47px;
+  margin: 14px -6px 20px 55px;
 }
 
 #deletepost:hover {
@@ -159,6 +177,12 @@ input {
 .search {
   display: block;
   margin: 10px auto;
+  height: 35px;
+}
+
+.feedselections {
+  display: flex;
+  align-items: baseline;
 }
 
 ::placeholder {
@@ -180,10 +204,10 @@ textarea {
 .feedpost {
   background-color: white;
   min-height: 50px;
-  border: 1px solid black;
-  margin: 10px auto 10px auto;
+  margin: 25px auto 10px auto;
   border-radius: 10px;
   width: 80%;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
 }
 
 .feedpost p {
@@ -198,15 +222,15 @@ textarea {
 
 .post {
   background-color: white;
-  margin: 87px auto 0px auto;
-  border: solid 2px; 
+  margin: 80px auto 0px auto;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   width: 80%;
-  box-shadow: 2px 3px rgba(0, 0, 0, 0.288);
 }
 
 .post p {
   margin: 20px;
+  padding: 10px;
 }
 
 
@@ -222,4 +246,11 @@ textarea {
     width: 80%;
   }
   
+}
+
+@media (max-width: 320px) {
+  .feedselections {
+    display: block;
+    
+  }
 }
